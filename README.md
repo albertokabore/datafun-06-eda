@@ -38,7 +38,11 @@ py -m pip install requests
 py -m pip install jupyterlab pandas pyarrow matplotlib seaborn
 ``` 
 ## List Installed Packages
+
+```PowerShell
 py -m pip list
+```
+
 6. Freeze Dependencies
 ## Freeze the installed requirements into a requirements.txt file:
 
@@ -53,6 +57,7 @@ py -m pip freeze > requirements.txt
 .venv/
 .ipynb_checkpoints/
 ```
+
 8. Commit Changes
 ## Add the changes to git and commit them:
 
