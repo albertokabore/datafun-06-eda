@@ -1,5 +1,10 @@
 # datafun-06-eda
+
+# Iris Dataset Analysis
+
 ## ALBERT KABORE
+Introduction
+The Iris dataset is a classic dataset in the field of machine learning and statistics, containing measurements of sepal length, sepal width, petal length, and petal width for three species of iris flowers: Setosa, Versicolor, and Virginica. Our goal is to explore and understand the relationships between these measurements and how they vary across different species.
 
 ## Specification for Project 6 EDA Notebook
 ## Overview
@@ -116,6 +121,8 @@ print(df.dtypes)
 ```python
 print(df.describe())
 ```
+Observation
+
 ## Step 4. Initial Data Distribution for Numerical Columns
 Choose a numerical column and use df['column_name'].hist() to plot a histogram for that specific column. To show all the histograms for all numerical columns, use df.hist().
 
@@ -127,6 +134,8 @@ df.hist()
 # Show all plots
 plt.show()
 ```
+Observation
+
 ## Step 5. Initial Data Distribution for Categorical Columns
 Choose a categorical column and use df['column_name'].value_counts() to display the count of each category. Use a loop to show the value counts for all categorical columns.
 
@@ -142,46 +151,106 @@ for col in df.select_dtypes(include=['object', 'category']).columns:
 # Show all plots
 plt.show()
 ```
+Observation
+
 ## Step 6. Initial Data Transformation and Feature Engineering
 1. Rename at least one column.
 
 ```python
-df.columns = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+df.rename(columns={'species': 'flower_species'}, inplace=True)
+```
+
+```python
+# Verify transformations
+print(df.head())
 ```
 
 2. Add at least one column.
 
 ```python
-df['petal_area'] = df['petal_length'] * df['petal_width']
+# Adding a new column 'sepal_area' as the product of sepal length and sepal width
 df['sepal_area'] = df['sepal_length'] * df['sepal_width']
 ```
 
-## Aspect Ratios: Ratios of length to width for petals and sepals might also provide insights.
+```python
+# Verify transformations
+print(df.head())
+```
 
 ```python
-df['petal_aspect_ratio'] = df['petal_length'] / df['petal_width']
-df['sepal_aspect_ratio'] = df['sepal_length'] / df['sepal_width']
-```
- Transforming Existing Data
-
- ```python
- df['species_encoded'] = df['species'].astype('category').cat.codes
- ```
-
- ```
- Feature Engineering for Model Improvement
-
-  ```python
-df['sepal_petal_length_interaction'] = df['sepal_length'] * df['petal_length']
+# Display the updated DataFrame with the new column
+print(df.head(10))
 ```
 
 ## Step 7. Initial Visualizations
+1. Distribution of Sepal Lengths by Species
+Goal:
+Explore the distribution of sepal lengths across different species to understand if there are distinct differences
+Chart Type: Violin Plot
 
  ```python
-sns.pairplot(df, hue='species', vars=['sepal_area', 'petal_area', 'sepal_aspect_ratio', 'petal_aspect_ratio'])
+# Violin plot to show distribution of sepal lengths by species
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='flower_species', y='sepal_length', data=df)
+plt.title('Distribution of Sepal Lengths by Species')
+plt.xlabel('Species')
+plt.ylabel('Sepal Length')
 plt.show()
 ```
+Observation
+
+2. Distribution of Sepal Lengths
+Goal:
+Explore the distribution of sepal lengths across different species.
+Chart Type: Histogram
+
+ ```python
+# Histogram for sepal length
+plt.figure(figsize=(10, 6))
+sns.histplot(data=df, x='sepal_length', hue='flower_species', multiple='stack', palette='viridis')
+plt.title('Distribution of Sepal Lengths by Species')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Count')
+plt.show()
+ ```
+Observation
+
+4. Relationship Between Sepal Length and Sepal Width
+Goal:
+Examine the relationship between sepal length and sepal width across different species.
+Chart Type: Scatter Plot
+
+ ```python
+# Scatter plot for sepal length vs. sepal width
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=df, x='sepal_length', y='sepal_width', hue='flower_species', palette='viridis')
+plt.title('Sepal Length vs. Sepal Width by Species')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.show()
+ ```
+Observation
+
+5. Sepal Area Distribution
+Goal:
+Investigate the distribution of the newly created sepal area feature across different species.
+Chart Type:Box plot
+
+ ```python
+# Box plot for sepal area
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df, x='flower_species', y='sepal_area', hue='flower_species', palette='viridis', dodge=False)
+plt.title('Distribution of Sepal Area by Species')
+plt.xlabel('Species')
+plt.ylabel('Sepal Area (cm^2)')
+plt.legend([],[], frameon=False)
+plt.show()
+ ```
+ Observation
+
 ## Step 8. Initial Storytelling and Presentation
+Conclusion:
+
 
 Commit all changes and push them to your GitHub repository:
 
