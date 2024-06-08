@@ -1,6 +1,6 @@
 # datafun-06-eda
 
-# Iris Dataset Analysis
+# Penguins Exploratory Dataset Analysis
 
 ## ALBERT KABORE
 Introduction
