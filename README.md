@@ -4,6 +4,7 @@
 
 ## ALBERT KABORE
 Introduction
+
 In this exploratory Data analysis, we examine a dataset featuring measurements of three penguin species: Adelie, Chinstrap, and Gentoo. The dataset includes features such as bill length, bill depth, flipper length, body mass, and the island of observation. Through exploratory Data analysis, we aim to uncover insights about these species.
 
 ## Specification for Project 6 EDA Notebook
