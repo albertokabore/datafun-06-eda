@@ -291,10 +291,8 @@ plt.suptitle("Joint Distribution of Bill Length and Depth by Penguin Species", y
 plt.show()
 ```
 
-
 ## Step 8. Initial Storytelling and Presentation
 Conclusion:
-
 
 Commit all changes and push them to your GitHub repository:
 
