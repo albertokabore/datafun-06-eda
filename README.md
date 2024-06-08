@@ -4,7 +4,7 @@
 
 ## ALBERT KABORE
 Introduction
-The Iris dataset is a classic dataset in the field of machine learning and statistics, containing measurements of sepal length, sepal width, petal length, and petal width for three species of iris flowers: Setosa, Versicolor, and Virginica. Our goal is to explore and understand the relationships between these measurements and how they vary across different species.
+In this exploratory Data analysis, we examine a dataset featuring measurements of three penguin species: Adelie, Chinstrap, and Gentoo. The dataset includes features such as bill length, bill depth, flipper length, body mass, and the island of observation. Through exploratory Data analysis, we aim to uncover insights about these species.
 
 ## Specification for Project 6 EDA Notebook
 ## Overview
@@ -104,7 +104,10 @@ Load the data into a pandas DataFrame. Use the pd read functions such as pd.read
 
 ```python
 # Load the dataset into a pandas DataFrame - adjust this process for your custom data
-df = sns.load_dataset('iris')
+df = sns.load_dataset("penguins")
+```
+
+```python
 # Inspect first rows of the DataFrame
 print(df.head())
 ```
@@ -128,7 +131,7 @@ Choose a numerical column and use df['column_name'].hist() to plot a histogram f
 
 ```python
 # Inspect histogram by numerical column
-df['sepal_length'].hist()
+df['body_mass_g'].hist()
 # Inspect histograms for all numerical columns
 df.hist()
 # Show all plots
@@ -142,14 +145,17 @@ Choose a categorical column and use df['column_name'].value_counts() to display 
 ```python
 # Inspect value counts by categorical column
 df['species'].value_counts()
+
 # Inspect value counts for all categorical columns
 for col in df.select_dtypes(include=['object', 'category']).columns:
     # Display count plot
     sns.countplot(x=col, data=df)
     plt.title(f'Distribution of {col}')
     plt.show()
+
 # Show all plots
 plt.show()
+
 ```
 Observation
 
@@ -157,7 +163,8 @@ Observation
 1. Rename at least one column.
 
 ```python
-df.rename(columns={'species': 'flower_species'}, inplace=True)
+# Renaming a column
+df.rename(columns={'species': 'Penguin Species'}, inplace=True)
 ```
 
 ```python
@@ -168,8 +175,8 @@ print(df.head())
 2. Add at least one column.
 
 ```python
-# Adding a new column 'sepal_area' as the product of sepal length and sepal width
-df['sepal_area'] = df['sepal_length'] * df['sepal_width']
+# Adding a new column
+df['body_mass_lbs'] = df['body_mass_g'] * 0.00220462
 ```
 
 ```python
@@ -183,70 +190,107 @@ print(df.head(10))
 ```
 
 ## Step 7. Initial Visualizations
-1. Distribution of Sepal Lengths by Species
-Goal:
-Explore the distribution of sepal lengths across different species to understand if there are distinct differences
-Chart Type: Violin Plot
+Subsection 1: Exploring the Relationship Between Flipper Length and Body Mass
+Goal: Investigate how flipper length correlates with body mass across different penguin species.
+
+Chart Type: Scatter plot
 
  ```python
-# Violin plot to show distribution of sepal lengths by species
+# Scatter plot of flipper length vs. body mass
 plt.figure(figsize=(10, 6))
-sns.violinplot(x='flower_species', y='sepal_length', data=df)
-plt.title('Distribution of Sepal Lengths by Species')
-plt.xlabel('Species')
-plt.ylabel('Sepal Length')
+scatter_plot = sns.scatterplot(data=df, x="flipper_length_mm", y="body_mass_g", hue="Penguin Species")
+scatter_plot.set_xlabel("Flipper Length (mm)")
+scatter_plot.set_ylabel("Body Mass (g)")
+scatter_plot.set_title("Penguin Flipper Length vs. Body Mass")
 plt.show()
 ```
 Observation
 
-2. Distribution of Sepal Lengths
-Goal:
-Explore the distribution of sepal lengths across different species.
-Chart Type: Histogram
+Chart Type: Regression Plot
 
  ```python
-# Histogram for sepal length
+# Regression plot of flipper length vs. body mass
 plt.figure(figsize=(10, 6))
-sns.histplot(data=df, x='sepal_length', hue='flower_species', multiple='stack', palette='viridis')
-plt.title('Distribution of Sepal Lengths by Species')
-plt.xlabel('Sepal Length (cm)')
-plt.ylabel('Count')
+reg_plot = sns.lmplot(data=df, x="flipper_length_mm", y="body_mass_g", hue="Penguin Species", height=6, aspect=1.5)
+plt.xlabel("Flipper Length (mm)")
+plt.ylabel("Body Mass (g)")
+plt.title("Regression of Flipper Length vs. Body Mass by Penguin Species")
+plt.show()
+ ```
+
+
+
+Subsection 2: Comparing Bill Length Across Penguin Species
+Goal: Compare the distribution of bill lengths among the different penguin species.Chart Type: Histogram
+Chart Type: Box Plot
+
+ ```python
+# Box plot for bill length
+plt.figure(figsize=(10, 6))
+box_plot = sns.boxplot(data=df, x="Penguin Species", y="bill_length_mm", hue="Penguin Species", palette="viridis", dodge=False)
+box_plot.set_xlabel("Penguin Species")
+box_plot.set_ylabel("Bill Length (mm)")
+box_plot.set_title("Distribution of Bill Length by Penguin Species")
+plt.legend([],[], frameon=False)  # Removes the legend since we are only using hue for color
 plt.show()
  ```
 Observation
 
-4. Relationship Between Sepal Length and Sepal Width
-Goal:
-Examine the relationship between sepal length and sepal width across different species.
-Chart Type: Scatter Plot
+Subsection 3: Distribution of Body Mass Across Penguin Species
+Goal: Examine the distribution of body mass for each penguin species.
+Chart Type: Violin Plot
 
  ```python
-# Scatter plot for sepal length vs. sepal width
+# Violin plot for body mass
 plt.figure(figsize=(10, 6))
-sns.scatterplot(data=df, x='sepal_length', y='sepal_width', hue='flower_species', palette='viridis')
-plt.title('Sepal Length vs. Sepal Width by Species')
-plt.xlabel('Sepal Length (cm)')
-plt.ylabel('Sepal Width (cm)')
+violin_plot = sns.violinplot(data=df, x="Penguin Species", y="body_mass_g", hue="Penguin Species", palette="muted", dodge=False)
+violin_plot.set_xlabel("Penguin Species")
+violin_plot.set_ylabel("Body Mass (g)")
+violin_plot.set_title("Distribution of Body Mass by Penguin Species")
+plt.legend([],[], frameon=False)  # Removes the legend since we are only using hue for color
 plt.show()
  ```
+
 Observation
+Subsection 4: Pairwise Relationships in the Penguin Dataset
+Goal: Visualize pairwise relationships and distributions for numerical features in the dataset, separated by species.
+Chart type: Pair plot 
 
-5. Sepal Area Distribution
-Goal:
-Investigate the distribution of the newly created sepal area feature across different species.
-Chart Type:Box plot
-
- ```python
-# Box plot for sepal area
-plt.figure(figsize=(10, 6))
-sns.boxplot(data=df, x='flower_species', y='sepal_area', hue='flower_species', palette='viridis', dodge=False)
-plt.title('Distribution of Sepal Area by Species')
-plt.xlabel('Species')
-plt.ylabel('Sepal Area (cm^2)')
-plt.legend([],[], frameon=False)
+```python
+ # Pair plot for numerical features
+pair_plot = sns.pairplot(df, hue="Penguin Species", diag_kind="kde", markers=["o", "s", "D"])
+pair_plot.fig.suptitle("Pairwise Relationships in the Penguin Dataset", y=1.02)
 plt.show()
  ```
- Observation
+Subsection 5: Correlation Matrix of Penguin Features
+Goal: Examine the correlations between different numerical features in the dataset.
+Chart Type: Heatmap
+
+```python
+# Compute the correlation matrix for numerical columns
+numerical_df = df.select_dtypes(include=['float64', 'int64'])
+corr = numerical_df.corr()
+# Heatmap of the correlation matrix
+plt.figure(figsize=(8, 6))
+heatmap = sns.heatmap(corr, annot=True, cmap="coolwarm", center=0)
+heatmap.set_title("Correlation Matrix of Penguin Features")
+plt.show()
+```
+
+Subsection 6: Bill Length and Depth Distribution
+Goal: To explore the distribution of bill length and bill depth across different penguin species.
+Chart Type: Joint Plot
+
+```python
+# Joint plot for bill length vs. bill depth
+plt.figure(figsize=(10, 6))
+joint_plot = sns.jointplot(data=df, x="bill_length_mm", y="bill_depth_mm", hue="Penguin Species", kind="kde", height=8)
+plt.xlabel("Bill Length (mm)")
+plt.ylabel("Bill Depth (mm)")
+plt.suptitle("Joint Distribution of Bill Length and Depth by Penguin Species", y=1.02)
+plt.show()
+```
+
 
 ## Step 8. Initial Storytelling and Presentation
 Conclusion:
@@ -256,7 +300,7 @@ Commit all changes and push them to your GitHub repository:
 
 git add .
 git commit -m "Complete project setup and initial analysis"
-git push
+git push origin main
 
 
 
